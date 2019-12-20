@@ -1,50 +1,55 @@
 <template>
-    <V-container>
-     <form @submit.prevent="login">
+    <v-container>
+        <v-form @submit.prevent="login">
+
             <v-text-field
+                    label="E-mail"
                     v-model="form.email"
-                    label="Email">
+                    type="email"
+                    required
+            ></v-text-field>
 
-            </v-text-field>
             <v-text-field
+                    label="Password"
                     v-model="form.password"
-                    label="Password" type="password">
+                    type="password"
+                    required
+            ></v-text-field>
 
-            </v-text-field>
+            <v-btn
+                    color="green"
+                    type="submit"
+            >Login</v-btn>
 
-
-
-            <v-btn color="green" type="submit" >Login</v-btn>
-        </form>
-    </V-container>
+            <router-link to="/signup">
+                <v-btn color="blue">Sign Up</v-btn>
+            </router-link>
+        </v-form>
+    </v-container>
 </template>
 
 <script>
-
-
     export default {
-
-        data() {
-
+        data(){
             return {
-
-                form : {
-
+                form :{
                     email:null,
                     password:null
                 }
-        }
+            }
         },
-        methods: {
-
+        created(){
+            if(User.loggedIn()){
+                this.$router.push({name:'forum'})
+            }
+        },
+        methods:{
             login(){
-
                 User.login(this.form)
             }
         }
     }
 </script>
 
-<style scoped>
-
+<style>
 </style>
