@@ -17,11 +17,15 @@ class QuestionResource extends JsonResource
         return [
 
             'title' => $this->title,
+            'slug' => $this->slug,
+            'replies' => ReplyRessource::collection($this->replies),
+            'reply_count' =>  $this->replies->count(),
             'path'  => $this->path,
             'body'  => $this->body,
             'created_at'  => $this->created_at->diffForHumans(),
             'category' => $this->category->name,
             'user' => $this->user->name,
+            'user_id' => $this->user->id,
 
         ];
     }

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Http\Resources\QuestionResource;
 use App\Model\Question;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 
 class QuestionController extends Controller
 {
@@ -18,12 +20,14 @@ class QuestionController extends Controller
     public function __construct()
     {
         $this->middleware('JWT', ['except' => ['index', 'show']]);
+
     }
 
 
     public function index(){
 
         return QuestionResource::collection(Question::latest()->get());
+        
     }
 
     public function show(Question $question){
@@ -39,20 +43,19 @@ class QuestionController extends Controller
     }
     public function store(Request $request){
 
-        Question::create([
-
-            'name' => $request->name,
-            'slug' => str_slug($request->name)
-        ]);
-        return response('Created', Response::HTTP_CREATED);
+       // dd($request);
+       // Question::create($request->all());
+        //$request['slug'] = str_slug($request->title);
+        $question = auth()->user()->question()->create($request->all());
+        return response(new QuestionResource($question), Response::HTTP_CREATED);
     }
 
     public function update(Request $request, Question $question){
 
         $question->update([
 
-            'name' => $request->name,
-            'slug' => str_slug($request->name)
+            'title' => $request->title,
+            //'slug' => str_slug($request->title)
         ]);
         return response('Updated', Response::HTTP_ACCEPTED);
     }

@@ -8,6 +8,14 @@ class Category extends Model
 {
     protected $guarded = [];
 
+
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function ($category) {
+            $category->slug = str_slug($category->name);
+        });
+    }
     public function questions(){
 
         return $this->hasMany(Question::class);
